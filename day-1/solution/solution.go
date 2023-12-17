@@ -3,6 +3,7 @@ package solution
 import(
 	"fmt"
 	"strconv"
+	"strings"
 	"errors"
 )
 
@@ -30,5 +31,43 @@ func CalibrationValueParser(input []string) (calibrationValue int, err error) {
 		calibrationValue += lineValue
 	}
 	return calibrationValue, nil
+
+}
+
+func ImprovedCalibrationValueParser(input []string) (calibrationValue int,
+		err error) {
+
+	var replaceMap map[string]string = map[string]string {
+		"one": "1",
+		"two": "2",
+		"three": "3",
+		"four": "4",
+		"five": "5",
+		"six": "6",
+		"seven": "7",
+		"eight": "8",
+		"nine": "9",
+	}
+
+	for i, str := range input {
+
+		var replaceOrdered []string = make([]string, len(str))
+
+		for s, _ := range replaceMap {
+			if i := strings.Index(str, s); i != -1 {
+				replaceOrdered[i] = s
+			}
+		}
+
+		for _, s := range replaceOrdered {
+			if s != "" {
+				str = strings.ReplaceAll(str, s, replaceMap[s])
+			}
+		}
+
+		input[i] = str
+	}
+
+	return CalibrationValueParser(input)
 
 }

@@ -5,10 +5,15 @@ import (
 	"log"
 	"os"
 	"fmt"
+	"flag"
 	solution "aoc23-1/solution"
 )
 
 func main() {
+
+	var improved *bool = flag.Bool("improved", false,
+			"Selects between normal and improved mode")
+	flag.Parse()
 
 	file, err := os.Open("input")
 	if err != nil {
@@ -22,9 +27,17 @@ func main() {
 		input = append(input, scanner.Text())
 	}
 
-	calibrationValue, err := solution.CalibrationValueParser(input)
-	if err != nil {
-		log.Fatal(err)
+	var calibrationValue int
+	if *improved {
+		calibrationValue, err = solution.ImprovedCalibrationValueParser(input)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		calibrationValue, err = solution.CalibrationValueParser(input)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	fmt.Println(calibrationValue)
 
