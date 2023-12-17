@@ -1,3 +1,5 @@
+// author: delightfulagony<agony@disroot.org> year: 2023
+
 package solution
 
 import "testing"
