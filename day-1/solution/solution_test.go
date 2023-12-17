@@ -22,3 +22,25 @@ func TestCalibrationValueParser(t *testing.T) {
 
 }
 
+func TestImprovedCalibrationValueParser(t *testing.T) {
+
+	var input []string = []string{
+		"two1nine",
+		"eightwothree",
+		"abcone2threexyz",
+		"xtwone3four",
+		"4nineeightseven2",
+		"zoneight234",
+		"7pqrstsixteen",
+	}
+
+	calibrationValue, err := ImprovedCalibrationValueParser(input)
+
+	if calibrationValue != 281 || err != nil {
+		t.Fatalf(
+			`ImprovedCalibrationValueParser(%s) = %d, %s wanted %d`,
+			input, calibrationValue, err, 281,
+		)
+	}
+
+}
