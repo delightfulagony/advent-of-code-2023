@@ -34,19 +34,29 @@ func CalibrationValueParser(input []string) (calibrationValue int, err error) {
 
 }
 
+func populateReplaceOrdered(str string, s string, replaceOrdered []string,
+		offset int) {
+
+	if i := strings.Index(str, s); i != -1 {
+		replaceOrdered[i+offset] = s
+		populateReplaceOrdered(str[i+1:], s, replaceOrdered, i+1)
+	}
+
+}
+
 func ImprovedCalibrationValueParser(input []string) (calibrationValue int,
 		err error) {
 
-	var replaceMap map[string]string = map[string]string {
-		"one": "1",
-		"two": "2",
-		"three": "3",
-		"four": "4",
-		"five": "5",
-		"six": "6",
-		"seven": "7",
-		"eight": "8",
-		"nine": "9",
+	var replaceMap map[string]rune = map[string]rune {
+		"one": '1',
+		"two": '2',
+		"three": '3',
+		"four": '4',
+		"five": '5',
+		"six": '6',
+		"seven": '7',
+		"eight": '8',
+		"nine": '9',
 	}
 
 	for i, str := range input {
@@ -54,14 +64,14 @@ func ImprovedCalibrationValueParser(input []string) (calibrationValue int,
 		var replaceOrdered []string = make([]string, len(str))
 
 		for s, _ := range replaceMap {
-			if i := strings.Index(str, s); i != -1 {
-				replaceOrdered[i] = s
-			}
+			populateReplaceOrdered(str, s, replaceOrdered, 0)
 		}
 
-		for _, s := range replaceOrdered {
+		for i, s := range replaceOrdered {
 			if s != "" {
-				str = strings.ReplaceAll(str, s, replaceMap[s])
+				runed := []rune(str)
+				runed[i] = replaceMap[s]
+				str = string(runed)
 			}
 		}
 

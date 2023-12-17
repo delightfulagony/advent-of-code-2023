@@ -22,6 +22,29 @@ func TestCalibrationValueParser(t *testing.T) {
 
 }
 
+func TestPopulateReplaceOrdered(t *testing.T) {
+
+	var input string = "eightwo"
+
+	var replaceMap map[string]rune = map[string]rune {
+		"two": '2',
+		"eight": '8',
+	}
+
+
+	var replaceOrdered []string = make([]string, len(input))
+	for s, _ := range replaceMap {
+		populateReplaceOrdered(input, s, replaceOrdered, 0)
+	}
+
+	if replaceOrdered[0] != "eight" || replaceOrdered[4] != "two" {
+		t.Fatalf(
+			`populateReplaceOrdered(%s) = %s`,
+			input, replaceOrdered,
+		)
+	}
+}
+
 func TestImprovedCalibrationValueParser(t *testing.T) {
 
 	var input []string = []string{
@@ -32,15 +55,17 @@ func TestImprovedCalibrationValueParser(t *testing.T) {
 		"4nineeightseven2",
 		"zoneight234",
 		"7pqrstsixteen",
+		"oneightwo",
 	}
 
 	calibrationValue, err := ImprovedCalibrationValueParser(input)
 
-	if calibrationValue != 281 || err != nil {
+	if calibrationValue != 293 || err != nil {
 		t.Fatalf(
 			`ImprovedCalibrationValueParser(%s) = %d, %s wanted %d`,
-			input, calibrationValue, err, 281,
+			input, calibrationValue, err, 363,
 		)
 	}
 
 }
+
